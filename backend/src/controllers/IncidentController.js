@@ -4,7 +4,7 @@ module.exports = {
     async index(request, response) {
         const { page = 1 } = request.query;
         const [count] = await connection("incidents").count();
-        const incidents = await connection("incidents")
+        const incidents = await connection('incidents').select('*')
           .join("ongs", "ongs.id", "=", "incidents.ong_id")
           .limit(5)
           .offset((page - 1) * 5)
@@ -26,6 +26,7 @@ module.exports = {
 
     async create(request, response){
         const {title, description, value} = request.body;
+        console.log("valoress", title, description, value)
         const ong_id = request.headers.authorization;
 
         const [id] = await connection ('incidents').insert({
@@ -41,14 +42,17 @@ module.exports = {
         const ong_id = request.headers.authorization;
         
         const incident = await connection ('incidents')
+        
         .where ('id', id)
         .select('ong_id')
         .first();
 
-        if (incident.ong_id != ong_id){
-            return response.status(401).json ({error:' Operation not permited'});
+          if(!incident) response.status(404).json({err:"Incident not found."});
+
+        if (incident.ong_id !== ong_id){
+            return response.status(401).json({error:' Operation not permited'});
         }
         await connection('incidents').where('id', id).delete();
-        return response.status(204).send();
+        return response.status(200).send({msg: "Incident was successfully deleted" });
     }
 };
