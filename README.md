@@ -3,9 +3,9 @@
 <h4 align="center">
   🚀 Semana OmniStack 11.0
 </h4>
-<p> This project was developed using the technologies:
+<p> O projeto foi desenvolvido utilizando as seguintes tecnologias:
 
-Node.js
-React
-React Native
-Expo
+<p>Node.js
+<p>React
+<p>React Native
+<p>Expo
